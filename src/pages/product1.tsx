@@ -1,13 +1,15 @@
 import { client } from "../services/contentful";
 
 interface ProductPageProps {
-  title: string;
+  heading: string;
+  subheading: string;
 }
 
 const ProductPage: React.FC<ProductPageProps> = (props) => {
   return (
     <div>
-      <h1>{props.title}</h1>
+      <h1>{props.heading}</h1>
+      <h2>{props.subheading}</h2>
     </div>
   );
 };
@@ -22,13 +24,13 @@ export async function getStaticProps() {
   //   .catch(console.error);
 
   // Get single entry
-
   const response = await client.getEntry("5SRnbc7bvkJdCeJD6o2avt");
   console.log(response.fields);
 
   return {
     props: {
-      title: response.fields.heading,
+      heading: response.fields.heading,
+      subheading: response.fields.subheading,
     },
   };
 }
