@@ -1,5 +1,5 @@
 import { GetStaticPropsContext } from "next";
-import { Project } from "./types";
+import { Project } from "../types";
 import Image from "next/image";
 
 const Project = ({ project }: { project: Project }) => {
@@ -65,7 +65,6 @@ export async function getStaticProps({ params }: GetStaticPropsContext<any>) {
 
   const { data } = await response.json();
   const [projectData] = data.projectCollection.items as any;
-  console.log("projectData: ", projectData);
 
   return {
     props: {

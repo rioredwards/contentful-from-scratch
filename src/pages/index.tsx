@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Project } from "./types";
+import { Project } from "../types";
 
 export default function Home({ projects }: { projects: Project[] }) {
   return (
@@ -66,7 +66,6 @@ export async function getStaticProps() {
 
   const { data } = await response.json();
   const projects = data.projectCollection.items as Project[];
-  console.log("projects: ", projects);
 
   return {
     props: {
