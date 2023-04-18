@@ -1,17 +1,40 @@
+import Image from "next/image";
+import Link from "next/link";
+
+type Image = {
+  title: string;
+  url: string;
+  width: number;
+  height: number;
+};
+
 interface Project {
   title: string;
+  slug: string;
   description: string;
-  image: string;
+  image: Image;
 }
 
 export default function Home({ projects }: { projects: Project[] }) {
   return (
-    <main>
-      <h1>Projects</h1>
-      <div className="space-y-4">
-        <pre className="w-96 whitespace-pre-wrap">
-          {JSON.stringify(projects)}
-        </pre>
+    <main className="flex flex-col w-full">
+      <h1 className="text-center">Projects</h1>
+      <div className="w-2/3 mx-auto">
+        <ul>
+          {projects.map((project, idx) => (
+            <li key={idx}>
+              <h2>{project.title}</h2>
+              <p>{project.description}</p>
+              <Link href={`/${project.slug}`} />
+              <Image
+                src={project.image.url}
+                alt={project.image.title}
+                width={200}
+                height={200}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </main>
   );
@@ -34,11 +57,13 @@ export async function getStaticProps() {
           projectCollection {
             items {
               title
+              slug
               description
               image {
                 title
                 url
                 width
+                height
               }
             }
           }
@@ -57,7 +82,11 @@ export async function getStaticProps() {
 
   return {
     props: {
-      projects: [projects],
+      projects: projects,
     },
   };
 }
+
+// const imageLoader = ({ src, width, quality }: Image) => {
+//   return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
+// };
