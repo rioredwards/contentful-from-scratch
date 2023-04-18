@@ -1,20 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-
-type Image = {
-  title: string;
-  url: string;
-  width: number;
-  height: number;
-};
-
-interface Project {
-  title: string;
-  slug: string;
-  description: string;
-  image: Image;
-}
+import { Project } from "./types";
 
 export default function Home({ projects }: { projects: Project[] }) {
   return (
@@ -78,8 +64,8 @@ export async function getStaticProps() {
     console.error("Error Fetching Data: ", response);
   }
 
-  const data = await response.json();
-  const projects = data.data.projectCollection.items as Project[];
+  const { data } = await response.json();
+  const projects = data.projectCollection.items as Project[];
   console.log("projects: ", projects);
 
   return {
