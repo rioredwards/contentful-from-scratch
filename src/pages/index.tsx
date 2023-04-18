@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
 type Image = {
   title: string;
@@ -25,13 +26,14 @@ export default function Home({ projects }: { projects: Project[] }) {
             <li key={idx}>
               <h2>{project.title}</h2>
               <p>{project.description}</p>
-              <Link href={`/${project.slug}`} />
-              <Image
-                src={project.image.url}
-                alt={project.image.title}
-                width={200}
-                height={200}
-              />
+              <Link href={`/${project.slug}`}>
+                <Image
+                  src={project.image.url}
+                  alt={project.image.title}
+                  width={200}
+                  height={200}
+                />
+              </Link>
             </li>
           ))}
         </ul>
@@ -53,7 +55,6 @@ export async function getStaticProps() {
       body: JSON.stringify({
         query: `
         query {
-          # add your query
           projectCollection {
             items {
               title
@@ -78,7 +79,8 @@ export async function getStaticProps() {
   }
 
   const data = await response.json();
-  const projects = data.data.projectCollection.items;
+  const projects = data.data.projectCollection.items as Project[];
+  console.log("projects: ", projects);
 
   return {
     props: {
@@ -86,7 +88,3 @@ export async function getStaticProps() {
     },
   };
 }
-
-// const imageLoader = ({ src, width, quality }: Image) => {
-//   return `https://example.com/${src}?w=${width}&q=${quality || 75}`;
-// };
